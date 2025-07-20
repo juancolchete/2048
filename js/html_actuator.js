@@ -4,9 +4,12 @@ function HTMLActuator() {
   this.bestContainer    = document.querySelector(".best-container");
   this.timerContainer    = document.querySelector(".timer-container");
   this.messageContainer = document.querySelector(".game-message");
+  this.timerRunning = true;
 
   setInterval(() => {
-    this.timerContainer.textContent = parseInt(this.timerContainer.textContent) + 1;
+    if(this.timerRunning){
+      this.timerContainer.textContent = parseInt(this.timerContainer.textContent) + 1;
+    }
   }, "1000");
   this.score = 0;
 }
@@ -132,13 +135,14 @@ HTMLActuator.prototype.updateBestScore = function (bestScore) {
 HTMLActuator.prototype.message = function (won) {
   var type    = won ? "game-won" : "game-over";
   var message = won ? "You win!" : "Game over!";
-
+  this.timerRunning = false;
   this.messageContainer.classList.add(type);
   this.messageContainer.getElementsByTagName("p")[0].textContent = message;
 };
 
 HTMLActuator.prototype.clearMessage = function () {
   // IE only takes one value to remove at a time.
+  this.timerContainer.textContent = 0;
   this.messageContainer.classList.remove("game-won");
   this.messageContainer.classList.remove("game-over");
 };
